@@ -1,28 +1,33 @@
 
 # Immigration Border Control System
 
-A Java-based console application designed to manage immigration and visa processing workflows, including applicant registration, authentication, visa applications, document submission, embassy review, blacklist verification, and border entry control.
+A Java-based console application designed to manage immigration and visa processing workflows, including applicant registration, authentication, visa applications, document submission, embassy review, blacklist verification, and traveller entry and exit management.
 
 ## 📌 Project Overview
 
 The **Immigration Border Control System** is developed using **Java, MySQL, JDBC, and Cloudinary** to provide a structured system for managing immigration-related activities.
 
-The system follows an object-oriented and modular architecture where different user roles have separate responsibilities. Applicants can register, log in, apply for visas, view visa status, and submit required documents. Embassy officers can review visa applications and approve or reject them. Border control officers can verify travellers and check blacklist records before allowing or denying entry.
+The system follows an object-oriented and modular architecture with separate roles for applicants, embassy officers, and border control officers. Applicants can register, log in, apply for visas, check visa status, complete required documents, and upload documents. Embassy officers can review visa applications and approve or reject them. Border control officers can verify travellers, check visa approval and blacklist status, and record traveller entry and exit movements.
 
-The project also integrates **Cloudinary** for cloud-based document uploading and **MySQL** for persistent data storage.
+The project uses **MySQL** for persistent data storage and **Cloudinary** for cloud-based document uploading.
 
 ## 🎯 Objectives
 
 - Manage applicant registration and authentication.
+- Provide secure role-based access for different users.
 - Allow applicants to submit visa applications.
-- Track and update visa application status.
-- Manage embassy officer operations.
-- Upload and manage visa-related documents.
-- Verify applicants before border entry.
-- Maintain blacklist records for restricted applicants.
-- Automatically deny entry for applicants with an active blacklist record.
-- Store and manage immigration data using MySQL.
-- Apply Object-Oriented Programming principles for modular development.
+- Check visa eligibility before application.
+- Manage required visa documents.
+- Upload visa documents using Cloudinary.
+- Track visa application and document status.
+- Allow embassy officers to review visa applications.
+- Approve or reject visa applications.
+- Verify travellers during border entry and exit.
+- Check active blacklist records.
+- Record traveller entry and exit movements.
+- Prevent entry when visa requirements or blacklist conditions are not satisfied.
+- Store immigration data using MySQL.
+- Apply Object-Oriented Programming principles and layered architecture.
 
 ## ✨ Features
 
@@ -30,94 +35,188 @@ The project also integrates **Cloudinary** for cloud-based document uploading an
 
 - Applicant registration
 - Applicant login
+- Login retry option
+- Forgot password functionality
 - Input validation
+- Applicant-specific visa management
 - Visa application submission
-- View visa application status
+- Visa status checking
+- Visa eligibility checking
 - Complete missing document requirements
 
 ### 🛂 Visa Management
 
 - Create visa applications
+- Support for different visa types:
+  - Student
+  - Tourist
+  - Business
+  - Work
+  - General
 - Store visa information in MySQL
 - View visa details
-- Track application status
-- Embassy officer approval/rejection
+- Track visa application status
+- Prevent duplicate visa applications
+- Embassy officer approval or rejection
 - Applicant-specific visa status checking
+
+### 📄 Visa Document Management
+
+- Automatic document requirement checklist
+- Mandatory document tracking
+- Document submission
+- Missing document completion
+- Document verification status
+- Pending and rejected document tracking
+- Document count management
+- Cloudinary-based document uploading
+
+### ☁️ Cloudinary Integration
+
+Visa-related documents can be uploaded to Cloudinary through the application.
+
+The document upload process is:
+
+```text
+Applicant
+    ↓
+Select Required Document
+    ↓
+Upload Document
+    ↓
+Cloudinary
+    ↓
+Upload Response
+    ↓
+Document Information
+    ↓
+Visa Document Record
+````
 
 ### 🏛️ Embassy Officer Management
 
-- Officer login
-- View visa applications
-- Review applicant applications
-- Approve or reject visa applications
-- Update visa status
+* Embassy officer login
+* View visa applications
+* Review visa applications
+* View applicant and visa details
+* Review submitted documents
+* Approve visa applications
+* Reject visa applications
+* Update visa status
 
-### 📄 Document Management
+### 🛃 Border Control Management
 
-- Submit required visa documents
-- Track document verification status
-- Identify mandatory and pending documents
-- Upload documents using Cloudinary
-- Store document information in the database
+* Border control officer login
+* Traveller verification
+* Applicant identification
+* Visa approval verification
+* Blacklist verification
+* Border entry processing
+* Border exit processing
+* Entry and exit record management
+* Prevention of invalid or unauthorized entry
+* Display traveller movement records
 
 ### 🚨 Blacklist Management
 
-- Maintain blacklist records
-- Store blacklist reason and status
-- Check applicants during border verification
-- Automatically deny entry for applicants with an active blacklist record
+* Maintain blacklist records
+* Store applicant and passport information
+* Store blacklist reason
+* Track blacklist status
+* Check active blacklist records during border verification
+* Deny entry when an active blacklist record is found
 
-### 🛃 Border Control
+### 🚶 Traveller Movement Management
 
-- Verify traveller information
-- Check visa status
-- Perform blacklist verification
-- Allow or deny border entry based on verification results
-- Maintain border entry/exit information
+The system maintains traveller movement information through dedicated repository components.
+
+It supports:
+
+* Recording traveller entry
+* Recording traveller exit
+* Checking active entry status
+* Preventing invalid duplicate entry records
+* Displaying traveller movement records
 
 ## 🏗️ System Architecture
 
-The project follows a modular layered structure:
+The project follows a layered and modular architecture:
+
+```text
+User
+  │
+  ├── Applicant
+  │
+  ├── Embassy Officer
+  │
+  └── Border Control Officer
+          │
+          ↓
+      Menu Layer
+          │
+          ↓
+      Service Layer
+          │
+          ↓
+    Repository Layer
+          │
+          ↓
+      MySQL Database
+
+Applicant Documents
+          │
+          ↓
+      Cloudinary
+```
+
+## 📂 Project Structure
 
 ```text
 Immigration-BorderControlSystem
 │
 ├── src
+│   │
+│   ├── menu
+│   │   ├── ApplicantMenu.java
+│   │   ├── MainMenu.java
+│   │   └── OfficerMenu.java
+│   │
 │   ├── model
-│   │   ├── User.java
 │   │   ├── Applicant.java
-│   │   ├── Visa.java
-│   │   ├── VisaDocument.java
+│   │   ├── BorderControlOfficer.java
 │   │   ├── EmbassyOfficer.java
-│   │   └── BorderControlOfficer.java
+│   │   ├── User.java
+│   │   ├── Visa.java
+│   │   └── VisaDocument.java
 │   │
 │   ├── repository
 │   │   ├── ApplicantRepository.java
-│   │   ├── VisaRepository.java
+│   │   ├── BorderControlOfficerRepository.java
+│   │   ├── BorderTravelRepository.java
+│   │   ├── EmbassyOfficerRepository.java
+│   │   ├── TravellerMovementRepository.java
 │   │   ├── VisaDocumentRepository.java
-│   │   └── EmbassyOfficerRepository.java
+│   │   └── VisaRepository.java
 │   │
 │   ├── service
 │   │   ├── ApplicantService.java
-│   │   ├── VisaService.java
+│   │   ├── BorderControlLoginService.java
+│   │   ├── BorderControlService.java
 │   │   ├── LoginService.java
-│   │   └── OfficerLoginService.java
+│   │   ├── OfficerLoginService.java
+│   │   ├── VisaDocumentService.java
+│   │   └── VisaService.java
 │   │
 │   ├── util
+│   │   ├── CloudinaryUploader.java
 │   │   ├── DatabaseConnection.java
-│   │   ├── Validation.java
 │   │   ├── InputHelper.java
-│   │   └── CloudinaryUploader.java
-│   │
-│   ├── menu
-│   │   ├── MainMenu.java
-│   │   ├── ApplicantMenu.java
-│   │   └── OfficerMenu.java
+│   │   └── Validation.java
 │   │
 │   └── Main.java
 │
 └── README.md
-````
+```
 
 ## 🔄 System Workflow
 
@@ -126,33 +225,41 @@ Applicant Registration
         ↓
 Applicant Login
         ↓
+Visa Eligibility Check
+        ↓
 Visa Application
         ↓
-Document Submission
+Document Requirement Checklist
+        ↓
+Document Upload
         ↓
 Embassy Officer Review
         ↓
 Visa Approval / Rejection
         ↓
-Border Verification
+Border Control Verification
+        ↓
+Visa Approval Check
         ↓
 Blacklist Check
         ↓
 Entry Allowed / Entry Denied
+        ↓
+Traveller Entry / Exit Record
 ```
 
 ## 🧩 Technologies Used
 
- Technology                   Purpose                          
- 
- Java 21                      Core application development     
- Object-Oriented Programming  Modular system design            
- JDBC                         Java–MySQL database connectivity 
- MySQL                        Persistent data storage          
- IntelliJ IDEA                Development environment          
- Cloudinary                   Cloud-based document uploading   
- Git                          Version control                  
- GitHub                       Source code management           
+| Technology                  | Purpose                           |
+| --------------------------- | --------------------------------- |
+| Java 21                     | Core application development      |
+| Object-Oriented Programming | Application design and modularity |
+| JDBC                        | Java-MySQL database connectivity  |
+| MySQL                       | Persistent data storage           |
+| IntelliJ IDEA               | Development environment           |
+| Cloudinary                  | Cloud-based document uploading    |
+| Git                         | Version control                   |
+| GitHub                      | Source code management            |
 
 ## 🗄️ Database
 
@@ -162,58 +269,67 @@ The project uses a MySQL database named:
 immigration_system
 ```
 
-Major database tables include:
+The system manages data related to:
 
-* `applicants`
-* `visas`
-* `embassy_officers`
-* `border_control_officers`
-* `blacklist`
-* `visa_documents`
+* Applicants
+* Visas
+* Embassy officers
+* Border control officers
+* Visa documents
+* Blacklisted applicants
+* Traveller movements
 
-The application uses **JDBC** and SQL queries to perform database operations such as:
+The application uses JDBC to perform database operations including:
 
 * INSERT
 * SELECT
 * UPDATE
-* Authentication queries
+* Authentication
 * Visa status updates
-* Blacklist verification
 * Document management
-
-## 🔐 Security and Validation
-
-The system includes validation mechanisms for:
-
-* Applicant registration
-* Login credentials
-* Required input fields
-* Visa application details
-* Document information
-* Officer authentication
+* Traveller entry records
+* Traveller exit records
 * Blacklist verification
 
-During border verification, an applicant with an **ACTIVE** blacklist record is denied entry.
+## 🔐 Validation
 
-## ☁️ Cloudinary Integration
+The system provides validation for important user inputs, including:
 
-Cloudinary is integrated into the project for uploading visa-related documents.
+* Name
+* Username
+* Password
+* Passport number
+* Age
+* Nationality
+* Visa eligibility
 
-The document workflow is:
+### Password Validation
+
+Passwords are checked for:
+
+* Minimum length
+* Uppercase letter
+* Lowercase letter
+* Number
+* Special character
+* No spaces
+
+### Passport Validation
+
+Passport numbers follow the required format:
 
 ```text
-Applicant
-    ↓
-Select Document
-    ↓
-Cloudinary Upload
-    ↓
-Upload Response
-    ↓
-Document Information Stored
-    ↓
-Verification Process
+P1234567
 ```
+
+### Visa Eligibility
+
+The system checks conditions such as:
+
+* Applicant details availability
+* Age requirements for Work and Business visas
+* Existing pending or approved visa applications
+* Passport validity
 
 ## 🧱 Object-Oriented Design
 
@@ -221,132 +337,109 @@ The project applies major Object-Oriented Programming concepts.
 
 ### Encapsulation
 
-Classes use private fields with appropriate getters and setters to control access to data.
+Class attributes are maintained using private fields with getters and setters.
 
 ### Inheritance
 
 Role-specific classes extend the common `User` class.
 
 ```text
-              User
-                |
-       ---------------------
-       |         |         |
-   Applicant  Embassy   Border Control
-              Officer      Officer
+                 User
+                   │
+        ┌──────────┼──────────┐
+        ↓          ↓          ↓
+   Applicant   Embassy    Border Control
+               Officer       Officer
 ```
 
 ### Abstraction
 
-Application responsibilities are separated into models, repositories, services, utilities, and menus.
+The application separates responsibilities into:
+
+* Model
+* Repository
+* Service
+* Utility
+* Menu
 
 ### Polymorphism
 
-Different user roles provide role-specific behaviour and menu operations while sharing common user functionality.
-
-## 📂 Project Structure
-
-### Model
-
-Contains the entities used by the application.
-
-Examples:
-
-* `User`
-* `Applicant`
-* `Visa`
-* `VisaDocument`
-* `EmbassyOfficer`
-* `BorderControlOfficer`
-
-### Repository
-
-Handles database operations using JDBC.
-
-### Service
-
-Contains application and business logic.
-
-### Utility
-
-Provides common functionality such as:
-
-* Database connection
-* Input handling
-* Validation
-* Cloudinary uploading
-
-### Menu
-
-Handles the console-based user interface and role-specific navigation.
+Different user roles provide their own role-specific menu behaviour while sharing common functionality from the parent `User` class.
 
 ## 🧪 Testing
 
-The application was tested using different functional workflows including:
+The system supports testing of major workflows including:
 
 * Applicant registration
-* Applicant login
+* Applicant authentication
+* Password reset
+* Visa eligibility validation
 * Visa application
-* Visa status checking
-* Embassy officer login
-* Visa approval/rejection
-* Document submission
-* Database insertion and retrieval
-* Input validation
+* Duplicate visa application prevention
+* Document checklist
+* Document upload
+* Embassy officer authentication
+* Visa approval
+* Visa rejection
+* Border control authentication
+* Visa approval verification
 * Blacklist verification
-* Border entry decision
+* Traveller entry
+* Traveller exit
+* Traveller movement records
+* Database operations
 
-### Example Blacklist Test
+### Example Border Verification
 
-An applicant with an active blacklist record was tested during border verification.
-
-```text
-Applicant ID      : APP18617
-Passport Number   : p1234567
-Reason            : Forged Documents
-Status            : ACTIVE
-```
-
-During border verification, the system detected the active blacklist record and denied entry.
+During border verification, the system checks:
 
 ```text
-BLACKLIST CHECK
-        ↓
-ACTIVE RECORD FOUND
-        ↓
-ENTRY DENIED
+Traveller
+    ↓
+Applicant Verification
+    ↓
+Visa Approval Check
+    ↓
+Blacklist Check
+    ↓
+Entry Decision
 ```
+
+If an applicant has an active blacklist record, the system denies entry.
 
 ## 📊 Key Outcomes
 
 The completed system provides:
 
-* Role-based immigration workflow
-* Database-backed visa management
-* Applicant authentication
-* Embassy application processing
-* Document management
-* Cloud-based document uploading
-* Automated blacklist verification
-* Border entry decision handling
+* Role-based immigration processing
+* Applicant registration and authentication
+* Visa eligibility checking
+* Visa application management
+* Document requirement management
+* Cloudinary document uploading
+* Embassy visa review
+* Visa approval and rejection
+* Border control verification
+* Blacklist checking
+* Traveller entry and exit tracking
+* MySQL-based persistent storage
 * Modular Java architecture
-* Persistent MySQL data storage
 
 ## 🚀 Future Enhancements
 
-The following features can be added in future versions:
+Possible future enhancements include:
 
 * Web-based user interface
-* Mobile application support
+* Mobile application
 * Password hashing and stronger authentication
 * Role-based access control
 * OCR-based document verification
-* AI-assisted document validation
-* Advanced immigration reports and analytics
+* AI-assisted document verification
+* Advanced reporting and analytics
+* Email and SMS notifications
 * Cloud deployment
-* Automated email/SMS notifications
-* Integration with external immigration databases
-* Scalable REST API architecture
+* REST API integration
+* Integration with external immigration systems
 
 ## 👩‍💻 Team
 
@@ -365,12 +458,7 @@ The following features can be added in future versions:
 
 **Academic / PBL Project**
 
-This project was developed as part of the Problem-Based Learning (PBL) coursework to demonstrate practical application of Java programming, Object-Oriented Programming, database management, JDBC, software architecture, and system integration.
+This project was developed as part of the Problem-Based Learning (PBL) coursework to demonstrate practical application of Java programming, Object-Oriented Programming, database management, JDBC, cloud document uploading, authentication, and immigration workflow management.
 
-## 📜 License
 
-This project is developed for academic and educational purposes.
 
-```
-```
-# Immigration-BorderControlSystem
